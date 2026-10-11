@@ -62,7 +62,7 @@ Die Migration aktiviert Realtime für alle drei Tabellen und Row Level Security 
 ### 2. Vercel
 
 1. Auf [vercel.com](https://vercel.com) **Add New → Project** wählen und dieses GitHub-Repository importieren (Framework wird als Next.js erkannt).
-2. Unter **Environment Variables** alle fünf Variablen aus der Tabelle oben eintragen.
+2. Unter **Environment Variables** alle fünf Variablen aus der Tabelle oben eintragen. Wichtig: `NEXT_PUBLIC_SUPABASE_URL` und `NEXT_PUBLIC_SUPABASE_ANON_KEY` als Typ **Config** anlegen, nicht als „Sensitive“. Vercel warnt sonst („Remove the public framework prefix …“), und die App kann keine Daten laden. Die drei übrigen Variablen bleiben „Sensitive“.
 3. **Deploy** klicken. Nach dem Build ist die App unter der angezeigten `*.vercel.app`-URL erreichbar.
 4. Abnahme: Login, beide Erfassungen speichern, Dashboard auf einem zweiten Gerät offen lassen und prüfen, dass neue Werte ohne Neuladen erscheinen, Event anlegen/abhaken/löschen.
 
