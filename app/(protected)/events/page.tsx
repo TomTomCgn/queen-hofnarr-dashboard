@@ -10,6 +10,9 @@ export default async function EventsPage() {
     .from("events")
     .select("id,title,created_by,done,created_at,updated_at")
     .order("created_at", { ascending: false });
-  if (error) throw new Error("Events konnten nicht geladen werden.");
+  if (error) {
+    console.error("[db] Events konnten nicht geladen werden", error);
+    throw new Error("Events konnten nicht geladen werden.");
+  }
   return <EventList initialEvents={data as EventItem[]} />;
 }
