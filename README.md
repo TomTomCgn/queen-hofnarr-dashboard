@@ -23,7 +23,7 @@ npm run dev                  # http://localhost:3000
 npm run seed                 # optional: ~30 Tage Beispieldaten
 ```
 
-Die Datenbank-Migration liegt in `supabase/migrations/`. Einspielen entweder mit der Supabase CLI (`supabase link --project-ref <ref>` und `supabase db push`) oder indem man den Inhalt der SQL-Datei im Supabase-Dashboard unter **SQL Editor** ausführt.
+Die Datenbank-Migrationen liegen in `supabase/migrations/`. Einspielen entweder mit der Supabase CLI (`supabase link --project-ref <ref>` und `supabase db push`) oder indem man den Inhalt der SQL-Datei im Supabase-Dashboard unter **SQL Editor** ausführt.
 
 ### Befehle
 
@@ -54,7 +54,7 @@ Die Datenbank-Migration liegt in `supabase/migrations/`. Einspielen entweder mit
 ### 1. Supabase
 
 1. Auf [supabase.com](https://supabase.com) ein neues Projekt anlegen, Region **Central EU (Frankfurt)**.
-2. Im Projekt **SQL Editor** öffnen, den Inhalt von `supabase/migrations/20261011120000_init.sql` einfügen und ausführen. (Alternativ: `supabase link` + `supabase db push`.)
+2. Im Projekt **SQL Editor** öffnen und die Dateien aus `supabase/migrations/` der Reihe nach (nach Dateiname sortiert) einfügen und ausführen. (Alternativ: `supabase link` + `supabase db push`.)
 3. Unter **Project Settings → API** die Project URL sowie den `anon`- und `service_role`-Key kopieren.
 
 Die Migration aktiviert Realtime für alle drei Tabellen und Row Level Security (nur Lesen für `anon`).

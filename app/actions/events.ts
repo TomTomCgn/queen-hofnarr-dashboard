@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { requireSession } from "@/lib/auth";
 import { getServerSupabase } from "@/lib/supabase/server";
+import { failure } from "@/lib/action-error";
 import type { ActionResult, EventItem } from "@/lib/types";
 import { createEventSchema, updateEventSchema } from "@/lib/validation";
 
@@ -16,7 +17,7 @@ export async function createEvent(input: unknown): Promise<ActionResult<EventIte
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Ungültige Eingabe." };
 
   const { data, error } = await getServerSupabase().from("events").insert(parsed.data).select(COLUMNS).single();
-  if (error) return { ok: false, error: "Event konnte nicht angelegt werden." };
+  if (error) return failure(error, "Event konnte nicht angelegt werden.");
   revalidatePath("/events");
   return { ok: true, data: data as EventItem };
 }
@@ -33,7 +34,7 @@ export async function updateEvent(input: unknown): Promise<ActionResult<EventIte
     .eq("id", id)
     .select(COLUMNS)
     .single();
-  if (error) return { ok: false, error: "Event konnte nicht gespeichert werden." };
+  if (error) return failure(error, "Event konnte nicht gespeichert werden.");
   revalidatePath("/events");
   return { ok: true, data: data as EventItem };
 }
@@ -44,7 +45,7 @@ export async function deleteEvent(id: unknown): Promise<ActionResult> {
   if (!parsed.success) return { ok: false, error: "Ungültige ID." };
 
   const { error } = await getServerSupabase().from("events").delete().eq("id", parsed.data);
-  if (error) return { ok: false, error: "Event konnte nicht gelöscht werden." };
+  if (error) return failure(error, "Event konnte nicht gelöscht werden.");
   revalidatePath("/events");
   return { ok: true, data: undefined };
 }
