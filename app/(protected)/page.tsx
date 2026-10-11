@@ -12,6 +12,7 @@ export default async function DashboardPage() {
     supabase.from("fool_entries").select("*").order("entry_date"),
   ]);
   if (queen.error || fool.error) {
+    console.error("[db] Dashboard-Daten konnten nicht geladen werden", queen.error ?? fool.error);
     throw new Error("Daten konnten nicht geladen werden.");
   }
 
