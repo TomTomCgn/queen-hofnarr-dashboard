@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireSession } from "@/lib/auth";
 import { PERSONS, type Person } from "@/lib/params";
 import { getServerSupabase } from "@/lib/supabase/server";
+import { failure } from "@/lib/action-error";
 import type { ActionResult } from "@/lib/types";
 import { entryDateSchema, foolEntrySchema, personSchema, queenEntrySchema } from "@/lib/validation";
 
@@ -25,7 +26,7 @@ export async function loadEntry(person: Person, entryDate: string): Promise<Acti
     .select(fields.join(","))
     .eq("entry_date", d.data)
     .maybeSingle();
-  if (error) return { ok: false, error: "Eintrag konnte nicht geladen werden." };
+  if (error) return failure(error, "Eintrag konnte nicht geladen werden.");
   return { ok: true, data: (data as EntryValues | null) ?? null };
 }
 
@@ -48,7 +49,7 @@ export async function saveEntry(person: Person, input: unknown): Promise<ActionR
     .maybeSingle();
 
   const { error } = await supabase.from(table).upsert(parsed.data as Record<string, unknown>, { onConflict: "entry_date" });
-  if (error) return { ok: false, error: "Speichern fehlgeschlagen. Bitte erneut versuchen." };
+  if (error) return failure(error, "Speichern fehlgeschlagen. Bitte erneut versuchen.");
 
   revalidatePath("/");
   return { ok: true, data: { updated: Boolean(existing) } };
